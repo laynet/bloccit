@@ -25,4 +25,15 @@ describe("routes : static", () => {
       });
     });
   });
+
+  //assignment work
+  describe("GET /about", () => {
+    it("should contain the string 'About Us'", done => {
+      request.get(base, (err, res, body) => {
+        expect(res.statusCode).toBe(200);
+        expect(body).toContain("About Us");
+        done();
+      });
+    });
+  });
 });
