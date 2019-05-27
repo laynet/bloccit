@@ -1,6 +1,7 @@
 const request = require("request");
 const server = require("../../src/server");
 const base = "http://localhost:3000/";
+const about = "http://localhost:3000/about";
 
 describe("routes : static", () => {
   //#1
@@ -27,9 +28,9 @@ describe("routes : static", () => {
   });
 
   //assignment work
-  describe("GET /about", () => {
+  describe("GET /aboutUs", () => {
     it("should contain the string 'About Us'", done => {
-      request.get(base, (err, res, body) => {
+      request.get(about, (err, res, body) => {
         expect(res.statusCode).toBe(200);
         expect(body).toContain("About Us");
         done();
