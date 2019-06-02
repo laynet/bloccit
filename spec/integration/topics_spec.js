@@ -22,8 +22,10 @@ describe("routes : topics", () => {
         });
     });
   });
+
   describe("GET /topics", () => {
     it("should return a status code 200 and all topics", done => {
+      //#3
       request.get(base, (err, res, body) => {
         expect(res.statusCode).toBe(200);
         expect(err).toBeNull();
