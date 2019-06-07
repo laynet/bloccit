@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   var Rule = sequelize.define(
     "Rule",
     {
-      title: DataTypes.STRING
+      title: DataTypes.STRING,
+      description: DataTypes.STRING
     },
     {}
   );
