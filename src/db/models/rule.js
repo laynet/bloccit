@@ -6,7 +6,15 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       description: DataTypes.STRING
     },
-    {}
+    {
+      topicId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Topics",
+          key: "id"
+        }
+      }
+    }
   );
   Rule.associate = function(models) {
     // associations can be defined here
