@@ -25,5 +25,25 @@ module.exports = {
         res.redirect(303, `/topics/${topic.id}`);
       }
     });
+  },
+  show(req, res, next) {
+    //#1
+    topicQueries.getTopic(req.params.id, (err, topic) => {
+      //#2
+      if (err || topic == null) {
+        res.redirect(404, "/");
+      } else {
+        res.render("topics/show", { topic });
+      }
+    });
+  },
+  destroy(req, res, next) {
+    topicQueries.deleteTopic(req.params.id, (err, topic) => {
+      if (err) {
+        res.redirect(500, `/topics/${topic.id}`);
+      } else {
+        res.redirect(303, "/topics");
+      }
+    });
   }
 };
