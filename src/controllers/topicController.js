@@ -13,7 +13,7 @@ module.exports = {
   new(req, res, next) {
     res.render("topics/new");
   },
-  reate(req, res, next) {
+  create(req, res, next) {
     let newTopic = {
       title: req.body.title,
       description: req.body.description
