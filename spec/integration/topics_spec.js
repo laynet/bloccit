@@ -117,21 +117,24 @@ describe("routes : topics", () => {
       });
     });
   });
+
   describe("POST /topics/:id/update", () => {
     it("should update the topic with the given values", done => {
       const options = {
         url: `${base}${this.topic.id}/update`,
         form: {
-          title: "Javascript Frameworks",
+          title: "JavaScript Frameworks",
           description: "There are a lot of them"
         }
       };
+      //#1
       request.post(options, (err, res, body) => {
         expect(err).toBeNull();
+        //#2
         Topic.findOne({
           where: { id: this.topic.id }
         }).then(topic => {
-          expect(topic.title).toBe("Javascript Frameworks");
+          expect(topic.title).toBe("JavaScript Frameworks");
           done();
         });
       });
