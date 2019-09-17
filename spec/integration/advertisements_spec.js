@@ -1,6 +1,6 @@
 const request = require("request");
 const server = require("../../src/server");
-const base = "http://localhost:3000/advertisement/";
+const base = "http://localhost:3000/advertisements/";
 
 describe("routes : advertisements", () => {
   describe("GET /advertisements", () => {
