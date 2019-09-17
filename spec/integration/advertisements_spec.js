@@ -51,24 +51,4 @@ describe("routes : advertisements", () => {
       );
     });
   });
-  // describe("POST /advertisements/create", () => {
-  //   it("should create a new advertisement", done => {
-  //     const options = {
-  //       url: `${base}create`,
-  //       form: {
-  //         title: "Advertisement 1",
-  //         description: "Advertisement 1 content"
-  //       }
-  //     };
-  //     request.post(options, (err, res, body) => {
-  //       expect(err).toBeNull();
-  //       Advertisement.findOne({
-  //         where: { title: "Advertisement 1" }
-  //       }).then(advertisement => {
-  //         expect(advertisement.title).toBe("Advertisement 1");
-  //         done();
-  //       });
-  //     });
-  //   });
-  // });
 });
