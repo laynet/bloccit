@@ -1,5 +1,8 @@
 const request = require("request");
 const server = require("../../src/server");
+const sequelize = require("../../src/db/models/index").sequelize;
+const Advertisement = require("../../src/db/models/advertisement");
+
 const base = "http://localhost:3000/advertisements/";
 
 describe("routes : advertisements", () => {
@@ -15,7 +18,7 @@ describe("routes : advertisements", () => {
     it("should render a new advertisement form", done => {
       request.get(`${base}new`, (err, res, body) => {
         expect(err).toBeNull();
-        expect(body).toContain("New advertisement");
+        expect(body).toContain("New Advertisement");
         done();
       });
     });
@@ -36,6 +39,9 @@ describe("routes : advertisements", () => {
 
         //#2
         (err, res, body) => {
+          // use the orm to get the record
+          // http method call, to create a record in the controller
+          // require the advertisement code
           Advertisement.findOne({ where: { title: "advertisement 1" } })
             .then(advertisement => {
               expect(res.statusCode).toBe(303);
