@@ -21,7 +21,7 @@ module.exports = {
         if (err) {
           res.redirect(500, "/advertisements/new");
         } else {
-          res.redirect(303, "/advertisements/${advertisement.id}");
+          res.redirect(303, `/advertisements/${advertisement.id}`);
         }
       }
     );

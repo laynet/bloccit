@@ -1,4 +1,4 @@
-const Advertisment = require("./models").Advertisement;
+const Advertisement = require("./models").Advertisement;
 
 module.exports = {
   //#1
@@ -27,7 +27,7 @@ module.exports = {
   addAdvertisement(newAdvertisement, callback) {
     return Advertisement.create({
       title: newAdvertisement.title,
-      description: newAdvertisemet.description
+      description: newAdvertisement.description
     })
       .then(advertisement => {
         callback(null, advertisement);

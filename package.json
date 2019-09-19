@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "test": "set NODE_ENV=test && jasmine",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
@@ -14,6 +15,9 @@
   "author": "Layne Taylor",
   "license": "ISC",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint": "^6.4.0",
     "faker": "^4.1.0",
     "jasmine": "^3.0.0",
     "request": "^2.83.0",
