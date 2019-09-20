@@ -14,12 +14,25 @@ module.exports = (sequelize, DataTypes) => {
           key: "id"
         }
       }
+    },
+    {
+      advertisementId: {
+        type: sequelize.INTEGER,
+        references: {
+          model: "Advertisements",
+          key: "id"
+        }
+      }
     }
   );
   Rule.associate = function(models) {
     // associations can be defined here
     Rule.belongsTo(models.Topic, {
       foreingkey: "topicId",
+      onDelete: "Cascade"
+    });
+    Rule.belongsTo(models.Advertisement, {
+      foreingkey: "advertisementId",
       onDelete: "Cascade"
     });
   };

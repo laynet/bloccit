@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "topicId",
       onDelete: "CASCADE"
     });
+    Banner.belongsTo(models.Advertisement, {
+      foreignKey: "advertisementId",
+      onDelete: "CASCADE"
+    });
   };
   return Banner;
 };
