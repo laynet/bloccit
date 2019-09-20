@@ -4,7 +4,7 @@ module.exports = {
   //#1
   getAllAdvertisements(callback) {
     return (
-      Advertisement.all()
+      Advertisement.findAll()
 
         //#2
         .then(advertisements => {

@@ -3,7 +3,13 @@ const advertisementQueries = require("../db/queries.advertisements.js");
 module.exports = {
   index(req, res, next) {
     // get call -> /advertisements
-    res.send("TODO: list all advertisements");
+    advertisementQueries.getAllAdvertisements((err, advertisements) => {
+      if (err) {
+        res.redirect(500, "static/index");
+      } else {
+        res.render("advertisements/index", { advertisements });
+      }
+    });
   },
   new(req, res, next) {
     // get call -> /advertisements/new
@@ -22,6 +28,18 @@ module.exports = {
           res.redirect(500, "/advertisements/new");
         } else {
           res.redirect(303, `/advertisements/${advertisement.id}`);
+        }
+      }
+    );
+  },
+  show(req, res, next) {
+    advertisementQueries.getAdvertisement(
+      req.params.id,
+      (err, advertisement) => {
+        if (err || advertisement == null) {
+          res.redirect(404, "/");
+        } else {
+          res.render("advertisements/show", { advertisements });
         }
       }
     );
