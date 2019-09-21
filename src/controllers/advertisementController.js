@@ -1,5 +1,5 @@
 const advertisementQueries = require("../db/queries.advertisements.js");
-
+//adding a comment
 module.exports = {
   index(req, res, next) {
     // get call -> /advertisements
