@@ -1,6 +1,6 @@
 const request = require("request");
 const server = require("../../src/server");
-const base = "http://localhost:3000/topics";
+const base = "http://localhost:3000/posts";
 
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
@@ -51,6 +51,31 @@ describe("routes : flairs", () => {
         expect(err).toBeNull();
         expect(body).toContain("New Flair");
         done();
+      });
+    });
+  });
+  describe("POST /posts/:postId/flairs/create", () => {
+    it("should create a new post and redirect", done => {
+      const options = {
+        url: `${base}/${this.post.id}/flairs/create`,
+        form: {
+          name: "smol cat",
+          color: "white"
+        }
+      };
+      request.post(options, (err, res, body) => {
+        Flair.findOne({ where: { name: "smol cat" } })
+          .then(flair => {
+            expect(flair).not.toBeNull();
+            expect(flair.name).toBe("smol cat");
+            expect(flair.color).toBe("white");
+            expect(flair.postId).not.toBeNull();
+            done();
+          })
+          .catch(err => {
+            console.log(err);
+            done();
+          });
       });
     });
   });
