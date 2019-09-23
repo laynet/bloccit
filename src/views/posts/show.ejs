@@ -18,6 +18,7 @@
         action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy"
         method="post"
       >
+        <% include ../static/partials/messages.ejs %>
         <button type="submit" class="btn btn-danger">Delete</button>
       </form>
       <p><%= post.body %></p>
