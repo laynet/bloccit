@@ -1,9 +1,9 @@
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
-const User = require("..//../src/db/models").User;
+const User = require("../../src/db/models").User;
 
-describe("Post", () => {
+describe("Topic", () => {
   beforeEach(done => {
     this.topic;
     this.post;
@@ -21,7 +21,6 @@ describe("Post", () => {
             title: "Expeditions to Alpha Centauri",
             description:
               "A compilation of reports from recent visits to the star system.",
-
             posts: [
               {
                 title: "My first visit to Proxima Centauri b",
@@ -44,37 +43,36 @@ describe("Post", () => {
       });
     });
   });
+
   describe("#create()", () => {
-    it("should create a topic object with a title and description", done => {
-      //#1
+    it("should create a topic object with a title, and description", done => {
       Topic.create({
-        title:
-          "The best art-house vampire movie is A Girl Walks Home Alone at Night",
-        description:
-          "It's in black and white and Persian so you'll need subtitles if you don't speak Persian"
-      }).then(topic => {
-        //#2
-        expect(topic.title).toBe(
-          "The best art-house vampire movie is A Girl Walks Home Alone at Night"
-        );
-        expect(topic.description).toBe(
-          "It's in black and white and Persian so you'll need subtitles if you don't speak Persian"
-        );
-        done();
-      });
-    });
-    it("should not create a tpoic with missing title or description", done => {
-      Topic.create({
-        title:
-          "The best art-house vampire movie is A Girl Walks Home Alone at Night",
-        description:
-          "It's in black and white and Persian so you'll need subtitles if you don't speak Persian"
+        title: "Some cool topic title",
+        description: "Some cool topic description."
       })
         .then(topic => {
+          expect(topic.title).toBe("Some cool topic title");
+          expect(topic.description).toBe("Some cool topic description.");
           done();
         })
         .catch(err => {
-          expect(err.message).toContain("Topic.title cannot be null");
+          console.log(err);
+          done();
+        });
+    });
+
+    it("should not create a topic with invalid attributes", done => {
+      Topic.create({
+        title: "A less cool topic title"
+      })
+        .then(topic => {
+          // the code in this block will not be evaluated since the validation error
+          // will skip it. Instead, we'll catch the error in the catch block below
+          // and set the expectations there
+
+          done();
+        })
+        .catch(err => {
           expect(err.message).toContain("Topic.description cannot be null");
           done();
         });
@@ -85,7 +83,7 @@ describe("Post", () => {
     it("should return the associated posts", done => {
       this.topic.getPosts().then(associatedPosts => {
         expect(associatedPosts[0].title).toBe(
-          "The funniest vampire movie is What We Do In The Shadows"
+          "My first visit to Proxima Centauri b"
         );
         done();
       });
