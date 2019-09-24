@@ -4,6 +4,7 @@ const base = "http://localhost:3000/topics/";
 
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
+// const User = require("../../src/db/models").User;
 
 function authorizeUser(role, done) {
   // helper function to create and authorize new user
