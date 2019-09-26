@@ -14,6 +14,7 @@ module.exports = {
     };
     // #2
     userQueries.createUser(newUser, (err, user) => {
+      console.log(err);
       if (err) {
         req.flash("error", err);
         res.redirect("/users/sign_up");
