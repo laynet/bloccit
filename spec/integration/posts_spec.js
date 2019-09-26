@@ -82,7 +82,10 @@ describe("routes : posts", () => {
             "Without a doubt my favoriting things to do besides watching paint dry!"
         }
       };
+
       request.post(options, (err, res, body) => {
+        console.log(options);
+        console.log(options.url);
         Post.findOne({ where: { title: "Watching snow melt" } })
           .then(post => {
             expect(post).not.toBeNull();

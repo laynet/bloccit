@@ -12,7 +12,7 @@ router.get("/topics/:topicId/posts/:id/edit", postController.edit);
 
 router.post(
   "/topics/:topicId/posts/create",
-  helper.ensureAuthenticated,
+  // helper.ensureAuthenticated,
   validation.validatePosts,
   postController.create
 );

@@ -3,11 +3,11 @@ const Topic = require("./models").Topic;
 
 module.exports = {
   addPost(newPost, callback) {
-    console.log("addPost ran");
+    // console.log("addPost ran");
     return Post.create(newPost)
 
       .then(post => {
-        console.log(post);
+        // console.log(post);
         callback(null, post);
       })
       .catch(err => {
