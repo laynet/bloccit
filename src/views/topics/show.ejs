@@ -14,7 +14,6 @@
         >New Post</a
       >
       <% if(currentUser.isAdmin()) { %>
-
       <form
         style="display:initial"
         action="/topics/<%= topic.id %>/destroy"
