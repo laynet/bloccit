@@ -47,16 +47,13 @@ describe("routes : posts", () => {
     });
   });
   //describe guest user context
-  describe("guest user performing CRUD actions for Post", () => {
-    beforeEach(done => {
+  describe("guest user can view posts", () => {
+    it("should render a view with the selected post", done => {
       request.get(
-        {
-          url: "http://localhost:3000/auth/fake",
-          form: {
-            role: "guest"
-          }
-        },
+        `${base}/${this.topic.id}/posts/${this.post.id}`,
         (err, res, body) => {
+          expect(err).toBeNull();
+          expect(body).toContain("Snowball Fighting");
           done();
         }
       );
