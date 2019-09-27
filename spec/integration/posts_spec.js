@@ -48,6 +48,30 @@ describe("routes : posts", () => {
   });
   //describe guest user context
   describe("guest user can view posts", () => {
+    // beforeEach(done => {
+    //   User.create({
+    //     email: "admin@example.com",
+    //     password: "123456",
+    //     role: "admin"
+    //   }).then(user => {
+    //     request.get(
+    //       {
+    //         // mock authentication
+    //         url: "http://localhost:3000/auth/fake",
+    //         form: {
+    //           role: user.role, // mock authenticate as admin user
+    //           userId: user.id,
+    //           email: user.email
+    //         }
+    //       },
+    //       (err, res, body) => {
+    //         done();
+    //       }
+    //     );
+    //   });
+    // });
+  });
+  describe("GET /topics/:topicId/posts/:id", () => {
     it("should render a view with the selected post", done => {
       request.get(
         `${base}/${this.topic.id}/posts/${this.post.id}`,
@@ -59,6 +83,8 @@ describe("routes : posts", () => {
       );
     });
   });
+
+  //end guest user context
 
   describe("GET /topics/:topicId/posts/new", () => {
     it("should render a new post form", done => {
