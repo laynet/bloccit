@@ -111,10 +111,11 @@ describe("routes : posts", () => {
       request.post(options, (err, res, body) => {
         console.log(options);
         console.log(options.url);
-        Post.findOne({ where: { title: "Watching snow melt" } })
+        Post.findAll()
           .then(post => {
+            console.log("*****" + post);
             expect(post).not.toBeNull();
-            console.log(post);
+
             expect(post.title).toBe("Watching snow melt");
             expect(post.body).toBe(
               "Without a doubt my favoriting things to do besides watching paint dry!"
