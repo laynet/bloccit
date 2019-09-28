@@ -62,6 +62,32 @@ describe("routes : posts", () => {
 
   //end guest user context
 
+  //member user context
+  describe("member user performing CRUD actions for Post", () => {
+    beforeEach(done => {
+      User.create({
+        email: "admin@example.com",
+        password: "123456",
+        role: "admin"
+      }).then(user => {
+        request.get(
+          {
+            // mock authentication
+            url: "http://localhost:3000/auth/fake",
+            form: {
+              role: user.role, // mock authenticate as admin user
+              userId: user.id,
+              email: user.email
+            }
+          },
+          (err, res, body) => {
+            done();
+          }
+        );
+      });
+    });
+  });
+
   describe("GET /topics/:topicId/posts/new", () => {
     it("should render a new post form", done => {
       request.get(`${base}/${this.topic.id}/posts/new`, (err, res, body) => {
@@ -138,74 +164,7 @@ describe("routes : posts", () => {
       );
     });
   });
-  describe("POST /topics/:topicId/posts/:id/destroy", () => {
-    it("should delete the post with the associated ID", done => {
-      //#1
-      expect(this.post.id).toBe(1);
 
-      request.post(
-        `${base}/${this.topic.id}/posts/${this.post.id}/destroy`,
-        (err, res, body) => {
-          //#2
-          Post.findById(1).then(post => {
-            expect(err).toBeNull();
-            expect(post).toBeNull();
-            done();
-          });
-        }
-      );
-    });
-  });
-  describe("GET /topics/:topicId/posts/:id/edit", () => {
-    it("should render a view with an edit post form", done => {
-      request.get(
-        `${base}/${this.topic.id}/posts/${this.post.id}/edit`,
-        (err, res, body) => {
-          expect(err).toBeNull();
-          expect(body).toContain("Edit Post");
-          expect(body).toContain("Snowball Fighting");
-          done();
-        }
-      );
-    });
-  });
-  describe("POST /topics/:topicId/posts/:id/update", () => {
-    it("should return a status code 302", done => {
-      request.post(
-        {
-          url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
-          form: {
-            title: "Snowman Building Competition",
-            body: "I love watching them melt slowly."
-          }
-        },
-        (err, res, body) => {
-          expect(res.statusCode).toBe(302);
-          done();
-        }
-      );
-    });
-
-    it("should update the post with the given values", done => {
-      const options = {
-        url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
-        form: {
-          title: "Snowman Building Competition",
-          body: "I really enjoy the funny hats on them."
-        }
-      };
-      request.post(options, (err, res, body) => {
-        expect(err).toBeNull();
-
-        Post.findOne({
-          where: { id: this.post.id }
-        }).then(post => {
-          expect(post.title).toBe("Snowman Building Competition");
-          done();
-        });
-      });
-    });
-  });
   //describe the owner/admin user context
   describe("owner or admin user performing CRUD actions for Post", () => {
     beforeEach(done => {
