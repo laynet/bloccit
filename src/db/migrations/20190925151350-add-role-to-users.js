@@ -5,6 +5,8 @@ module.exports = {
     return queryInterface.addColumn("Users", "role", {
       type: Sequelize.STRING,
       allowNull: false,
+
+      // #1
       defaultValue: "member"
     });
   },

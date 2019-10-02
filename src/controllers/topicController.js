@@ -14,7 +14,7 @@ module.exports = {
   new(req, res, next) {
     console.log("topicController new ran");
     const authorized = new Authorizer(req.user).new();
-    console.log("topicController new ran");
+    console.log("REQ.USER", req.user, authorized);
     if (authorized) {
       res.render("topics/new");
     } else {

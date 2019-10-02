@@ -10,11 +10,11 @@ module.exports = {
 
         //#2
         .then(topics => {
-          console.log("getAllTopics = " + topics);
+          console.log("getAllTopics = ", topics);
           callback(null, topics);
         })
         .catch(err => {
-          console.log("getAllTopics error: " + err);
+          console.log("getAllTopics error: ", err);
           callback(err);
         })
     );
@@ -30,11 +30,11 @@ module.exports = {
       ]
     })
       .then(topic => {
-        console.log("getTopic = " + topic);
+        console.log("getTopic = ", topic);
         callback(null, topic);
       })
       .catch(err => {
-        console.log("getTopic error: " + err);
+        console.log("getTopic error: ", err);
         callback(err);
       });
   },
@@ -45,11 +45,11 @@ module.exports = {
       description: newTopic.description
     })
       .then(topic => {
-        console.log("addTopic = " + topic);
+        console.log("addTopic = ", topic);
         callback(null, topic);
       })
       .catch(err => {
-        console.log("addTopic error: " + err);
+        console.log("addTopic error: ", err);
         callback(err);
       });
   },

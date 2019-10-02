@@ -69,7 +69,7 @@ describe("routes : posts", () => {
       request.post(options, (err, res, body) => {
         Post.findOne({ where: { title: "Watching snow melt" } })
           .then(post => {
-            console.log("post = " + post);
+            console.log("post = ", post);
             expect(post).not.toBeNull();
             expect(post.title).toBe("Watching snow melt");
             expect(post.body).toBe(
