@@ -4,19 +4,23 @@ const Post = require("./models").Post;
 module.exports = {
   //#1
   getAllTopics(callback) {
+    console.log("getAllTopics ran");
     return (
       Topic.all()
 
         //#2
         .then(topics => {
+          console.log("getAllTopics = " + topics);
           callback(null, topics);
         })
         .catch(err => {
+          console.log("getAllTopics error: " + err);
           callback(err);
         })
     );
   },
   getTopic(id, callback) {
+    console.log("getTopic ran");
     return Topic.findById(id, {
       include: [
         {
@@ -26,21 +30,26 @@ module.exports = {
       ]
     })
       .then(topic => {
+        console.log("getTopic = " + topic);
         callback(null, topic);
       })
       .catch(err => {
+        console.log("getTopic error: " + err);
         callback(err);
       });
   },
   addTopic(newTopic, callback) {
+    console.log("addTopic ran");
     return Topic.create({
       title: newTopic.title,
       description: newTopic.description
     })
       .then(topic => {
+        console.log("addTopic = " + topic);
         callback(null, topic);
       })
       .catch(err => {
+        console.log("addTopic error: " + err);
         callback(err);
       });
   },

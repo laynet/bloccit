@@ -5,6 +5,7 @@ module.exports = {
     res.render("posts/new", { topicId: req.params.topicId });
   },
   create(req, res, next) {
+    console.log("postController create ran");
     let newPost = {
       title: req.body.title,
       body: req.body.body,
