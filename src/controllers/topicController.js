@@ -12,6 +12,7 @@ module.exports = {
     });
   },
   new(req, res, next) {
+    console.log("topicController new ran");
     const authorized = new Authorizer(req.user).new();
     console.log("topicController new ran");
     if (authorized) {
