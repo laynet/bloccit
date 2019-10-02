@@ -61,7 +61,7 @@ module.exports = {
     // #1
     topicQueries.deleteTopic(req, (err, topic) => {
       if (err) {
-        res.redirect(err, `/topics/${req.params.id}`);
+        res.redirect(500, `/topics/${req.params.id}`);
       } else {
         res.redirect(303, "/topics");
       }
