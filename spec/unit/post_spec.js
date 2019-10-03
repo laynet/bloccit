@@ -62,7 +62,6 @@ describe("Post", () => {
           done();
         })
         .catch(err => {
-          console.log(err);
           done();
         });
     });

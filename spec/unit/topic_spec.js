@@ -56,7 +56,6 @@ describe("Topic", () => {
           done();
         })
         .catch(err => {
-          console.log(err);
           done();
         });
     });

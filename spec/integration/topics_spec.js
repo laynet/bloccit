@@ -42,7 +42,6 @@ describe("routes : topics", () => {
           done();
         })
         .catch(err => {
-          console.log(err);
           done();
         });
     });
@@ -87,7 +86,6 @@ describe("routes : topics", () => {
     describe("GET /topics/new", () => {
       it("should render a new topic form", done => {
         request.get(`${base}new`, (err, res, body) => {
-          console.log("CREATE NEW TOPIC", err, body);
           expect(err).toBeNull();
           expect(body).toContain("New Topic");
           done();
@@ -136,7 +134,6 @@ describe("routes : topics", () => {
               done();
             })
             .catch(err => {
-              console.log(err);
               done();
             });
         });
@@ -152,7 +149,7 @@ describe("routes : topics", () => {
           request.post(`${base}${this.topic.id}/destroy`, (err, res, body) => {
             Topic.all().then(topics => {
               expect(err).toBeNull();
-              expect(topics.length).toBe(topicCountBeforeDelete);
+              expect(topics.length).toBe(topicCountBeforeDelete - 1);
               done();
             });
           });
@@ -174,7 +171,7 @@ describe("routes : topics", () => {
           Topic.findOne({
             where: { id: 1 }
           }).then(topic => {
-            expect(topic.title).toBe("JS Frameworks"); //confirm title is unchanged
+            expect(topic.title).toBe("JavaScript Frameworks"); //confirm title is unchanged
             done();
           });
         });
@@ -259,7 +256,6 @@ describe("routes : topics", () => {
               done();
             })
             .catch(err => {
-              console.log(err);
               done();
             });
         });

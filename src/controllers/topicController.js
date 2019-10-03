@@ -12,9 +12,8 @@ module.exports = {
     });
   },
   new(req, res, next) {
-    console.log("topicController new ran");
     const authorized = new Authorizer(req.user).new();
-    console.log("REQ.USER", req.user, authorized);
+
     if (authorized) {
       res.render("topics/new");
     } else {
@@ -25,7 +24,7 @@ module.exports = {
   create(req, res, next) {
     // #1
     const authorized = new Authorizer(req.user).create();
-    console.log("topicController create");
+
     // #2
     if (authorized) {
       let newTopic = {
@@ -47,7 +46,7 @@ module.exports = {
   },
   show(req, res, next) {
     //#1
-    console.log("topicController show ran");
+
     topicQueries.getTopic(req.params.id, (err, topic) => {
       //#2
       if (err || topic == null) {

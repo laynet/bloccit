@@ -4,7 +4,7 @@ module.exports = {
     const topicRoutes = require("../routes/topics");
     const postRoutes = require("../routes/posts");
     const userRoutes = require("../routes/users");
-    console.log("NODE_ENV: ", process.env.NODE_ENV);
+
     if (process.env.NODE_ENV === "test") {
       const mockAuth = require("../../spec/support/mock-auth.js");
       mockAuth.fakeIt(app);
