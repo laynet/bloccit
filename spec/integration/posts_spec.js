@@ -88,7 +88,8 @@ describe("routes : posts", () => {
       it("should render a new post form", done => {
         request.get(`${base}/${this.topic.id}/posts/new`, (err, res, body) => {
           expect(err).toBeNull();
-          expect(body).toContain("New Post");
+          expect(body.indexOf("New Post") !== -1).toBe(true);
+          console.log("***BODY***", body);
           done();
         });
       });
@@ -107,6 +108,7 @@ describe("routes : posts", () => {
           Post.findOne({ where: { title: "Watching snow melt" } })
             .then(post => {
               expect(post).not.toBeNull();
+              console.log("***POST***", post);
               expect(post.title).toBe("Watching snow melt");
               expect(post.body).toBe(
                 "Without a doubt my favoriting things to do besides watching paint dry!"

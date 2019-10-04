@@ -4,6 +4,7 @@ const Authorizer = require("../policies/post");
 module.exports = {
   show(req, res, next) {
     postQueries.getPost(req.params.id, (err, post) => {
+      // console.log("CONTROLLER POST ", post, err);
       if (err || post == null) {
         res.redirect(404, "/");
       } else {
@@ -12,36 +13,37 @@ module.exports = {
     });
   },
   new(req, res, next) {
-    const authorized = new Authorizer(req.user).new();
-    if (authorized) {
-      res.render("posts/new", { topicId: req.params.topicId });
-    } else {
-      req.flash("notice", "You are not authorized to do that.");
-      res.redirect("/topics");
-    }
+    // const authorized = new Authorizer(req.user).new();
+    // console.log("^^^^^^^^AUTHORIZED", authorized);
+    // if (authorized) {
+    res.render("posts/new", { topicId: req.params.topicId });
+    // } else {
+    //   req.flash("notice", "You are not authorized to do that.");
+    //   res.redirect("/topics");
+    // }
   },
   create(req, res, next) {
-    console.log("postController create ran");
-    const authorized = new Authorizer(req.user).create();
-    if (authorized) {
-      let newPost = {
-        title: req.body.title,
-        body: req.body.body,
-        topicId: req.params.topicId,
-        userId: req.user.id
-      };
-      postQueries.addPost(newPost, (err, post) => {
-        if (err) {
-          console.log("postController create error: ", err);
-          res.redirect(500, "/posts/new");
-        } else {
-          res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);
-        }
-      });
-    } else {
-      req.flash("notice", "You are not authorized to do that.");
-      res.redirect("/posts");
-    }
+    // console.log("postController create ran");
+    // const authorized = new Authorizer(req.user).create();
+    // if (authorized) {
+    let newPost = {
+      title: req.body.title,
+      body: req.body.body,
+      topicId: req.params.topicId,
+      userId: req.user.id
+    };
+    postQueries.addPost(newPost, (err, post) => {
+      if (err) {
+        console.log("postController create error: ", err);
+        res.redirect(500, "/posts/new");
+      } else {
+        res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);
+      }
+    });
+    // } else {
+    //   req.flash("notice", "You are not authorized to do that.");
+    //   res.redirect("/posts");
+    // }
   },
 
   destroy(req, res, next) {
