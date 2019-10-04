@@ -4,13 +4,15 @@ const Authorizer = require("../policies/post");
 
 module.exports = {
   addPost(newPost, callback) {
-    const authorized = new Authorizer(req.user).new();
+    console.log("queries.post addPost ran");
+    const authorized = new Authorizer(req.user).create();
     if (authorized) {
       return Post.create(newPost)
         .then(post => {
           callback(null, post);
         })
         .catch(err => {
+          console.log("queries.posts addPost err: ", err);
           callback(err);
         });
     } else {

@@ -21,6 +21,7 @@ module.exports = {
     }
   },
   create(req, res, next) {
+    console.log("postController create ran");
     const authorized = new Authorizer(req.user).create();
     if (authorized) {
       let newPost = {
@@ -31,6 +32,7 @@ module.exports = {
       };
       postQueries.addPost(newPost, (err, post) => {
         if (err) {
+          console.log("postController create error: ", err);
           res.redirect(500, "/posts/new");
         } else {
           res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);

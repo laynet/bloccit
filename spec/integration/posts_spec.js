@@ -46,7 +46,6 @@ describe("routes : posts", () => {
       });
     });
   });
-
   //describe the guest user context - show
   describe("GET /topics/:topicId/posts/:id", () => {
     it("should render a view with the selected post", done => {
