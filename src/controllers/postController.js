@@ -2,7 +2,6 @@ const postQueries = require("../db/queries.posts.js");
 const Authorizer = require("../policies/post");
 
 module.exports = {
-  //do i relace this new instead of putting authorized under create??
   show(req, res, next) {
     postQueries.getPost(req.params.id, (err, post) => {
       if (err || post == null) {
