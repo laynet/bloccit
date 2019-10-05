@@ -3,7 +3,7 @@ const Topic = require("./models").Topic;
 const Authorizer = require("../policies/post");
 
 module.exports = {
-  addPost(newPost, callback) {
+  addPost(req, newPost, callback) {
     console.log("@@@@@@@@@ ", newPost);
     console.log("queries.post addPost ran");
     const authorized = new Authorizer(req.user).create();
