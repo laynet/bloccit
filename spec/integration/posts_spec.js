@@ -258,7 +258,10 @@ describe("routes : posts", () => {
         expect(this.post.id).toBe(1);
 
         request.post(
-          `${base}/${this.topic.id}/posts/${this.post.id}/destroy`,
+          console.log(
+            "$$$$$$$$$$$$$$$$$ POST POST /topics/:topicId/posts/:id/destroy",
+            post
+          )`${base}/${this.topic.id}/posts/${this.post.id}/destroy`,
           (err, res, body) => {
             //#2
             Post.findById(1).then(post => {
