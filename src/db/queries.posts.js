@@ -21,23 +21,7 @@ module.exports = {
         callback(err);
       });
   },
-  // deletePost(req, callback) {
-  //   const authorized = new Authorizer(req.user).destroy();
-  //   if (authorized) {
-  //     return Post.destroy({
-  //       where: { id }
-  //     })
-  //       .then(deletedRecordsCount => {
-  //         callback(null, deletedRecordsCount);
-  //       })
-  //       .catch(err => {
-  //         callback(err);
-  //       });
-  //   } else {
-  //     req.flash("notice", "You are not authorized to do that.");
-  //     callback(401);
-  //   }
-  // },
+
   deletePost(req, callback) {
     // #1
     return Post.findById(req.params.id)
