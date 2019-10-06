@@ -89,7 +89,7 @@ describe("routes : posts", () => {
         request.get(`${base}/${this.topic.id}/posts/new`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body.indexOf("New Post") !== -1).toBe(true);
-          console.log("***BODY***", body);
+
           done();
         });
       });
@@ -108,7 +108,7 @@ describe("routes : posts", () => {
           Post.findOne({ where: { title: "Watching snow melt" } })
             .then(post => {
               expect(post).not.toBeNull();
-              console.log("***POST***", post);
+
               expect(post.title).toBe("Watching snow melt");
               expect(post.body).toBe(
                 "Without a doubt my favoriting things to do besides watching paint dry!"
@@ -258,10 +258,7 @@ describe("routes : posts", () => {
         expect(this.post.id).toBe(1);
 
         request.post(
-          console.log(
-            "$$$$$$$$$$$$$$$$$ POST POST /topics/:topicId/posts/:id/destroy",
-            post
-          )`${base}/${this.topic.id}/posts/${this.post.id}/destroy`,
+          `${base}/${this.topic.id}/posts/${this.post.id}/destroy`,
           (err, res, body) => {
             //#2
             Post.findById(1).then(post => {

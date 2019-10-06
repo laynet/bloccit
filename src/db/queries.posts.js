@@ -9,9 +9,7 @@ module.exports = {
         callback(null, post);
       })
       .catch(err => {
-        console.log("queries.posts addPost err: ", err);
         callback(err);
-        console.log("QUERIES>POSTS ERROR:", err);
       });
   },
   getPost(id, callback) {
