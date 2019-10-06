@@ -21,22 +21,44 @@ module.exports = {
         callback(err);
       });
   },
+  // deletePost(req, callback) {
+  //   const authorized = new Authorizer(req.user).destroy();
+  //   if (authorized) {
+  //     return Post.destroy({
+  //       where: { id }
+  //     })
+  //       .then(deletedRecordsCount => {
+  //         callback(null, deletedRecordsCount);
+  //       })
+  //       .catch(err => {
+  //         callback(err);
+  //       });
+  //   } else {
+  //     req.flash("notice", "You are not authorized to do that.");
+  //     callback(401);
+  //   }
+  // },
   deletePost(req, callback) {
-    const authorized = new Authorizer(req.user).destroy();
-    if (authorized) {
-      return Post.destroy({
-        where: { id }
+    // #1
+    return Post.findById(req.params.id)
+      .then(post => {
+        // #2
+        const authorized = new Authorizer(req.user, post).destroy();
+
+        if (authorized) {
+          // #3
+          post.destroy().then(deletedRecordsCount => {
+            callback(null, deletedRecordsCount);
+          });
+        } else {
+          // #4
+          req.flash("notice", "You are not authorized to do that.");
+          callback(401);
+        }
       })
-        .then(deletedRecordsCount => {
-          callback(null, deletedRecordsCount);
-        })
-        .catch(err => {
-          callback(err);
-        });
-    } else {
-      req.flash("notice", "You are not authorized to do that.");
-      callback(401);
-    }
+      .catch(err => {
+        callback(err);
+      });
   },
   updatePost(req, updatedPost, callback) {
     const authorized = new Authorizer(req.user).update();
