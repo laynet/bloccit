@@ -44,14 +44,20 @@ module.exports = {
         callback(err);
       });
   },
-  updatePost(req, updatedPost, callback) {
-    const authorized = new Authorizer(req.user).update();
-    if (authorized) {
-      return Post.findById(id).then(post => {
-        if (!post) {
-          return callback("Post not found");
-        }
 
+  updatePost(req, updatedPost, callback) {
+    // #1
+    return Post.findById(req.params.id).then(post => {
+      // #2
+      if (!post) {
+        return callback("Post not found");
+      }
+
+      // #3
+      const authorized = new Authorizer(req.user, post).update();
+
+      if (authorized) {
+        // #4
         post
           .update(updatedPost, {
             fields: Object.keys(updatedPost)
@@ -62,10 +68,11 @@ module.exports = {
           .catch(err => {
             callback(err);
           });
-      });
-    } else {
-      req.flash("notice", "You are not authorized to do that.");
-      callback(401);
-    }
+      } else {
+        // #5
+        req.flash("notice", "You are not authorized to do that.");
+        callback("Forbidden");
+      }
+    });
   }
 };

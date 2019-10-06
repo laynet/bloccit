@@ -285,6 +285,7 @@ describe("routes : posts", () => {
     });
     describe("POST /topics/:topicId/posts/:id/update", () => {
       it("should return a status code 302", done => {
+        console.log("UPDATEAOIWDJAOIWDJPOAWKDJPOAWJDPO");
         request.post(
           {
             url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
@@ -294,6 +295,7 @@ describe("routes : posts", () => {
             }
           },
           (err, res, body) => {
+            console.log("@@@@@@@@@@@", err, body);
             expect(res.statusCode).toBe(302);
             done();
           }

@@ -29,6 +29,16 @@ module.exports = class ApplicationPolicy {
 
   // #4
   edit() {
+    // console.log(
+    //   "THIS>NEW ()",
+    //   this.new(),
+    //   "THIS>RECORD ",
+    //   this.record,
+    //   "ISOWNER ",
+    //   this._isOwner(),
+    //   "ISADMIN ",
+    //   this._isAdmin()
+    // );
     return this.new() && this.record && (this._isOwner() || this._isAdmin());
   }
 

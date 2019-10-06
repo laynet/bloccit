@@ -76,6 +76,7 @@ module.exports = {
     // #1
     postQueries.getPost(req.params.id, (err, post) => {
       if (err || post == null) {
+        console.log("REDIRECTING BECAUSE ERR OR POST NULL");
         res.redirect(404, "/");
       } else {
         // #2
@@ -109,9 +110,12 @@ module.exports = {
     // #1
     postQueries.updatePost(req, req.body, (err, post) => {
       if (err || post == null) {
-        res.redirect(401, `/posts/${req.params.id}/edit`);
+        res.redirect(
+          401,
+          `/topics/${req.params.topicId}/posts/${req.params.id}/edit`
+        );
       } else {
-        res.redirect(`/posts/${req.params.id}`);
+        res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
       }
     });
   }
