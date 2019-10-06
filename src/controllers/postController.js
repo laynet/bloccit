@@ -12,14 +12,14 @@ module.exports = {
     });
   },
   new(req, res, next) {
-    // const authorized = new Authorizer(req.user).new();
+    const authorized = new Authorizer(req.user).new();
 
-    // if (authorized) {
-    res.render("posts/new", { topicId: req.params.topicId });
-    // } else {
-    //   req.flash("notice", "You are not authorized to do that.");
-    //   res.redirect("/topics");
-    // }
+    if (authorized) {
+      res.render("posts/new", { topicId: req.params.topicId });
+    } else {
+      req.flash("notice", "You are not authorized to do that.");
+      res.redirect("/topics");
+    }
   },
   create(req, res, next) {
     const authorized = new Authorizer(req.user).create();
@@ -57,37 +57,62 @@ module.exports = {
     });
   },
 
+  // edit(req, res, next) {
+  //   const authorized = new Authorizer(req.user).edit();
+  //   if (authorized) {
+  //     postQueries.getPost(req.params.id, (err, post) => {
+  //       if (err || post == null) {
+  //         res.redirect(404, "/");
+  //       } else {
+  //         res.render("posts/edit", { post });
+  //       }
+  //     });
+  //   } else {
+  //     req.flash("notice", "You are not authorized to do that.");
+  //     res.redirect("/posts");
+  //   }
+  // },
   edit(req, res, next) {
-    const authorized = new Authorizer(req.user).edit();
-    if (authorized) {
-      postQueries.getPost(req.params.id, (err, post) => {
-        if (err || post == null) {
-          res.redirect(404, "/");
-        } else {
+    // #1
+    postQueries.getPost(req.params.id, (err, post) => {
+      if (err || post == null) {
+        res.redirect(404, "/");
+      } else {
+        // #2
+        const authorized = new Authorizer(req.user, post).edit();
+
+        // #3
+        if (authorized) {
           res.render("posts/edit", { post });
-        }
-      });
-    } else {
-      req.flash("notice", "You are not authorized to do that.");
-      res.redirect("/posts");
-    }
-  },
-  update(req, res, next) {
-    const authorized = new Authorizer(req.user).update();
-    if (authorized) {
-      postQueries.updatePost(req.params.id, req.body, (err, post) => {
-        if (err || post == null) {
-          res.redirect(
-            404,
-            `/topics/${req.params.topicId}/posts/${req.params.id}/edit`
-          );
         } else {
-          res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
+          req.flash("You are not authorized to do that.");
+          res.redirect(`/posts/${req.params.id}`);
         }
-      });
-    } else {
-      req.flash("notice", "You are not authorized to do that.");
-      res.redirect("/posts");
-    }
+      }
+    });
+  },
+
+  //   update(req, res, next) {
+  //     postQueries.updatePost(req.params.id, req.body, (err, post) => {
+  //       if (err || post == null) {
+  //         res.redirect(
+  //           404,
+  //           `/topics/${req.params.topicId}/posts/${req.params.id}/edit`
+  //         );
+  //       } else {
+  //         res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
+  //       }
+  //     });
+  //   }
+  // };
+  update(req, res, next) {
+    // #1
+    postQueries.updatePost(req, req.body, (err, post) => {
+      if (err || post == null) {
+        res.redirect(401, `/posts/${req.params.id}/edit`);
+      } else {
+        res.redirect(`/posts/${req.params.id}`);
+      }
+    });
   }
 };
