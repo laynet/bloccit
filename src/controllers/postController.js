@@ -23,27 +23,27 @@ module.exports = {
     // }
   },
   create(req, res, next) {
-    // console.log("postController create ran");
-    // const authorized = new Authorizer(req.user).create();
-    // if (authorized) {
-    let newPost = {
-      title: req.body.title,
-      body: req.body.body,
-      topicId: req.params.topicId,
-      userId: req.user.id
-    };
-    postQueries.addPost(newPost, (err, post) => {
-      if (err) {
-        console.log("postController create error: ", err);
-        res.redirect(500, "/posts/new");
-      } else {
-        res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);
-      }
-    });
-    // } else {
-    //   req.flash("notice", "You are not authorized to do that.");
-    //   res.redirect("/posts");
-    // }
+    console.log("postController create ran");
+    const authorized = new Authorizer(req.user).create();
+    if (authorized) {
+      let newPost = {
+        title: req.body.title,
+        body: req.body.body,
+        topicId: req.params.topicId,
+        userId: req.user.id
+      };
+      postQueries.addPost(newPost, (err, post) => {
+        if (err) {
+          console.log("postController create error: ", err);
+          res.redirect(500, "/posts/new");
+        } else {
+          res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);
+        }
+      });
+    } else {
+      req.flash("notice", "You are not authorized to do that.");
+      res.redirect("/posts");
+    }
   },
 
   destroy(req, res, next) {
