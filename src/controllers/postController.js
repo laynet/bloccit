@@ -46,13 +46,15 @@ module.exports = {
 
   destroy(req, res, next) {
     postQueries.deletePost(req, (err, post) => {
+      console.log("POST ", post);
       if (err) {
+        console.log("DESTROY ERROR: ", err);
         res.redirect(
           500,
           `/topics/${req.params.topicId}/posts/${req.params.id}`
         );
       } else {
-        res.redirect(303, "/posts");
+        res.redirect(303, `/topics/${req.params.topicId}`);
       }
     });
   },
@@ -61,7 +63,6 @@ module.exports = {
     // #1
     postQueries.getPost(req.params.id, (err, post) => {
       if (err || post == null) {
-        console.log("REDIRECTING BECAUSE ERR OR POST NULL");
         res.redirect(404, "/");
       } else {
         // #2
