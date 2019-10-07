@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     User.prototype.isAdmin = function() {
       return this.role === "admin";
     };
+    User.hasMany(models.Comment, {
+      foreignKey: "userId",
+      as: "comments"
+    });
   };
   return User;
 };
