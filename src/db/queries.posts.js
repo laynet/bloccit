@@ -15,7 +15,7 @@ module.exports = {
       });
   },
   getPost(id, callback) {
-    return Post.findByPk(id, {
+    return Post.findById(id, {
       include: [{ model: Comment, as: "comments", include: [{ model: User }] }]
     })
       .then(post => {
