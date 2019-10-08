@@ -46,9 +46,7 @@ module.exports = {
 
   destroy(req, res, next) {
     postQueries.deletePost(req, (err, post) => {
-      console.log("POST ", post);
       if (err) {
-        console.log("DESTROY ERROR: ", err);
         res.redirect(
           500,
           `/topics/${req.params.topicId}/posts/${req.params.id}`
