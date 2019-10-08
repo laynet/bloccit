@@ -1,4 +1,3 @@
-// #1
 const request = require("request");
 const server = require("../../src/server");
 const base = "http://localhost:3000/topics/";
@@ -71,7 +70,7 @@ describe("routes : comments", () => {
       });
     });
   });
-
+  //guest user context - not signed in
   describe("guest attempting to perform CRUD actions for Comment", () => {
     // #2
     beforeEach(done => {
@@ -89,53 +88,55 @@ describe("routes : comments", () => {
         }
       );
     });
+  });
 
-    // #3
-    describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
-      it("should not create a new comment", done => {
-        const options = {
-          url: `${base}${this.topic.id}/posts/${this.post.id}/comments/create`,
-          form: {
-            body: "This comment is amazing!"
-          }
-        };
-        request.post(options, (err, res, body) => {
-          // #4
-          Comment.findOne({ where: { body: "This comment is amazing!" } })
-            .then(comment => {
-              expect(comment).toBeNull(); // ensure no comment was created
-              done();
-            })
-            .catch(err => {
-              console.log(err);
-              done();
-            });
-        });
-      });
-    });
-
-    // #5
-    describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
-      it("should not delete the comment with the associated ID", done => {
-        Comment.findAll().then(comments => {
-          const commentCountBeforeDelete = comments.length;
-
-          expect(commentCountBeforeDelete).toBe(1);
-
-          request.post(
-            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
-            (err, res, body) => {
-              Comment.findAll().then(comments => {
-                expect(err).toBeNull();
-                expect(comments.length).toBe(commentCountBeforeDelete);
-                done();
-              });
-            }
-          );
-        });
+  // #3
+  describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
+    it("should not create a new comment", done => {
+      const options = {
+        url: `${base}${this.topic.id}/posts/${this.post.id}/comments/create`,
+        form: {
+          body: "This comment is amazing!"
+        }
+      };
+      request.post(options, (err, res, body) => {
+        // #4
+        Comment.findOne({ where: { body: "This comment is amazing!" } })
+          .then(comment => {
+            expect(comment).toBeNull(); // ensure no comment was created
+            done();
+          })
+          .catch(err => {
+            console.log(err);
+            done();
+          });
       });
     });
   });
+
+  // #5
+  describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+    it("should not delete the comment with the associated ID", done => {
+      Comment.findAll().then(comments => {
+        const commentCountBeforeDelete = comments.length;
+
+        expect(commentCountBeforeDelete).toBe(1);
+
+        request.post(
+          `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+          (err, res, body) => {
+            Comment.findAll().then(comments => {
+              expect(err).toBeNull();
+              expect(comments.length).toBe(commentCountBeforeDelete);
+              done();
+            });
+          }
+        );
+      });
+    });
+  });
+
+  //member context - signed in user
   // #1
   describe("signed in user performing CRUD actions for Comment", () => {
     beforeEach(done => {
@@ -154,53 +155,53 @@ describe("routes : comments", () => {
         }
       );
     });
+  });
 
-    // #2
-    describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
-      it("should create a new comment and redirect", done => {
-        const options = {
-          url: `${base}${this.topic.id}/posts/${this.post.id}/comments/create`,
-          form: {
-            body: "This comment is amazing!"
-          }
-        };
-        request.post(options, (err, res, body) => {
-          Comment.findOne({ where: { body: "This comment is amazing!" } })
-            .then(comment => {
-              expect(comment).not.toBeNull();
-              expect(comment.body).toBe("This comment is amazing!");
-              expect(comment.id).not.toBeNull();
-              done();
-            })
-            .catch(err => {
-              console.log(err);
+  // #2
+  describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
+    it("should create a new comment and redirect", done => {
+      const options = {
+        url: `${base}${this.topic.id}/posts/${this.post.id}/comments/create`,
+        form: {
+          body: "This comment is amazing!"
+        }
+      };
+      request.post(options, (err, res, body) => {
+        Comment.findOne({ where: { body: "This comment is amazing!" } })
+          .then(comment => {
+            expect(comment).not.toBeNull();
+            expect(comment.body).toBe("This comment is amazing!");
+            expect(comment.id).not.toBeNull();
+            done();
+          })
+          .catch(err => {
+            console.log(err);
+            done();
+          });
+      });
+    });
+  });
+
+  //signed in user can delete own comment
+  describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+    it("should delete the comment with the associated ID", done => {
+      Comment.findAll().then(comments => {
+        const commentCountBeforeDelete = comments.length;
+
+        expect(commentCountBeforeDelete).toBe(1);
+
+        request.post(
+          `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+          (err, res, body) => {
+            expect(res.statusCode).toBe(302);
+            Comment.findAll().then(comments => {
+              expect(err).toBeNull();
+              expect(comments.length).toBe(commentCountBeforeDelete - 1);
               done();
             });
-        });
+          }
+        );
       });
     });
-
-    // #3
-    describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
-      it("should delete the comment with the associated ID", done => {
-        Comment.findAll().then(comments => {
-          const commentCountBeforeDelete = comments.length;
-
-          expect(commentCountBeforeDelete).toBe(1);
-
-          request.post(
-            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
-            (err, res, body) => {
-              expect(res.statusCode).toBe(302);
-              Comment.findAll().then(comments => {
-                expect(err).toBeNull();
-                expect(comments.length).toBe(commentCountBeforeDelete - 1);
-                done();
-              });
-            }
-          );
-        });
-      });
-    });
-  }); //end context for signed in user
+  });
 });
