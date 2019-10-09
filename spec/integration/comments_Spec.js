@@ -245,7 +245,7 @@ describe("routes : comments", () => {
       });
     });
   }); //end context for signed in user
-  // admine context
+  // admin context
   describe("admin performing CRUD actions for Comment", () => {
     beforeEach(done => {
       // before each suite in this context
