@@ -198,32 +198,32 @@ describe("routes : votes", () => {
             });
         });
       });
-      //voting assignment
-      //   it("should not create multiple downvotes per user", done => {
-      //     const options = {
-      //       url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
-      //     };
-      //     request.get(options, (err, res, body) => {
-      //       console.log("ERROR: ", err, "BODY: ", body);
-      //       Vote.findOne({
-      //         where: {
-      //           userId: this.user.id,
-      //           postId: this.post.id
-      //         }
-      //       })
-      //         .then(vote => {
-      //           expect(vote).not.toBeNull();
-      //           expect(vote.value).toBe(-1);
-      //           expect(vote.userId).toBe(this.user.id);
-      //           expect(vote.postId).toBe(this.post.id);
-      //           done();
-      //         })
-      //         .catch(err => {
-      //           console.log(err);
-      //           done();
-      //         });
-      //     });
-      //   });
+      //   voting assignment
+      it("should not create multiple downvotes per user", done => {
+        const options = {
+          url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
+        };
+        request.get(options, (err, res, body) => {
+          console.log("ERROR: ", err, "BODY: ", body);
+          Vote.findOne({
+            where: {
+              userId: this.user.id,
+              postId: this.post.id
+            }
+          })
+            .then(vote => {
+              expect(vote).not.toBeNull();
+              expect(vote.value).toBe(-1);
+              expect(vote.userId).toBe(this.user.id);
+              expect(vote.postId).toBe(this.post.id);
+              done();
+            })
+            .catch(err => {
+              console.log(err);
+              done();
+            });
+        });
+      });
     });
   }); //end context for signed in user
 });
