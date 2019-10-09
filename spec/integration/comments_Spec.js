@@ -71,7 +71,7 @@ describe("routes : comments", () => {
       });
     });
   });
-
+  //guest user context
   describe("guest attempting to perform CRUD actions for Comment", () => {
     // #2
     beforeEach(done => {
@@ -90,7 +90,7 @@ describe("routes : comments", () => {
       );
     });
 
-    // #3
+    //guests who aren't signed in can't create comments
     describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
       it("should not create a new comment", done => {
         const options = {
@@ -114,7 +114,7 @@ describe("routes : comments", () => {
       });
     });
 
-    // #5
+    // guests who aren't signed in can't delete comments
     describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
       it("should not delete the comment with the associated ID", done => {
         Comment.findAll().then(comments => {
@@ -136,7 +136,7 @@ describe("routes : comments", () => {
       });
     });
   });
-  // #1
+  // member/signed in user context
   describe("signed in user performing CRUD actions for Comment", () => {
     beforeEach(done => {
       // before each suite in this context
@@ -155,7 +155,7 @@ describe("routes : comments", () => {
       );
     });
 
-    // #2
+    // signed in user can create a new comment
     describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
       it("should create a new comment and redirect", done => {
         const options = {
@@ -180,7 +180,7 @@ describe("routes : comments", () => {
       });
     });
 
-    //digned in user can delete their own post
+    //signed in user can delete their own post
     describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
       it("should delete the comment with the associated ID", done => {
         Comment.findAll().then(comments => {
@@ -245,4 +245,113 @@ describe("routes : comments", () => {
       });
     });
   }); //end context for signed in user
+  // admine context
+  describe("admin performing CRUD actions for Comment", () => {
+    beforeEach(done => {
+      // before each suite in this context
+      request.get(
+        {
+          // mock authentication
+          url: "http://localhost:3000/auth/fake",
+          form: {
+            role: "admin", // mock authenticate as member user
+            userId: this.user.id
+          }
+        },
+        (err, res, body) => {
+          done();
+        }
+      );
+    });
+
+    // admin can create a new comment
+    describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
+      it("should create a new comment and redirect", done => {
+        const options = {
+          url: `${base}${this.topic.id}/posts/${this.post.id}/comments/create`,
+          form: {
+            body: "This comment is amazing!"
+          }
+        };
+        request.post(options, (err, res, body) => {
+          Comment.findOne({ where: { body: "This comment is amazing!" } })
+            .then(comment => {
+              expect(comment).not.toBeNull();
+              expect(comment.body).toBe("This comment is amazing!");
+              expect(comment.id).not.toBeNull();
+              done();
+            })
+            .catch(err => {
+              console.log(err);
+              done();
+            });
+        });
+      });
+    });
+
+    //admin can delete their own comment
+    describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+      it("should delete the comment with the associated ID", done => {
+        Comment.findAll().then(comments => {
+          const commentCountBeforeDelete = comments.length;
+
+          expect(commentCountBeforeDelete).toBe(1);
+
+          request.post(
+            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+              expect(res.statusCode).toBe(302);
+              Comment.findAll().then(comments => {
+                expect(err).toBeNull();
+                expect(comments.length).toBe(commentCountBeforeDelete - 1);
+                done();
+              });
+            }
+          );
+        });
+      });
+    });
+    //admin can delete someone elses comment
+    describe("POST /topics/:topicID/posts/:postID/comments/:id/destroy", () => {
+      beforeEach(done => {
+        User.create({
+          email: "admine@admin.com",
+          password: "12345678",
+          role: "admin"
+        }).then(user => {
+          request.get(
+            {
+              // mock authentication
+              url: "http://localhost:3000/auth/fake",
+              form: {
+                role: user.role, // mock authenticate as member user
+                userId: user.id,
+                email: user.email
+              }
+            },
+            (err, res, body) => {
+              done();
+            }
+          );
+        });
+      });
+      it("should delete another user's comment", done => {
+        Comment.all().then(comments => {
+          const commentCountBeforeDelete = comments.length;
+          expect(commentCountBeforeDelete).toBe(1);
+          request.post(
+            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+              expect(res.statusCode).toBe(302);
+              Comment.all().then(comments => {
+                expect(err).toBeNull();
+                expect(comments.length).toBe(commentCountBeforeDelete - 1);
+                done();
+              });
+            }
+          );
+        });
+      });
+    });
+  });
 });
