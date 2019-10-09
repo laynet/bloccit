@@ -128,6 +128,19 @@ describe("Vote", () => {
           done();
         });
     });
+    //voting assignment
+    it("should not create a vote with a value other than 1 or -1", done => {
+      Vote.create({
+        value: 2,
+        postId: this.post.id,
+        userId: this.user.id
+      })
+        .then(vote => {})
+        .catch(err => {
+          console.log(err);
+          done();
+        });
+    });
   });
   describe("#setUser()", () => {
     it("should associate a vote and a user together", done => {
@@ -239,4 +252,58 @@ describe("Vote", () => {
         });
     });
   });
+  //voting assignment
+  describe("#getPoints()", () => {
+    it("should return the total number of points per post", done => {
+      Votes.create({
+        value: 1,
+        userId: this.user.id,
+        postId: this.post.id
+      })
+        .then(vote => {
+          let points = this.post.getPoints();
+          expect(points).toBe(1);
+          done();
+        })
+        .catch(err => {
+          console.log(err);
+          done();
+        });
+    });
+  });
+  //   describe("#hasUpvoteFor()", () => {
+  //     it("should return true if the user has an upvote for the post", done => {
+  //       Votes.create({
+  //         value: 1,
+  //         userId: this.user.id,
+  //         postId: this.post.id
+  //       }).then(vote => {
+  //         vote.postId.hasUpvoteFor().then(associatePost => {
+  //           expect(this.votes).toBe(true);
+  //         });
+  //         done();
+  //       });
+  //     }).catch(err => {
+  //       console.log(err);
+  //       done();
+  //     });
+  //   });
+
+  //   describe("#hasDownvoteFor()", () => {
+  //     it("shoud return true if the user has a downvote for the post", done => {
+  //       Votes.create({
+  //         value: 1,
+  //         userId: this.user.id,
+  //         postId: this.post.id
+  //       }).then(vote => {
+  //         vote.postId.hasDownvoteFor().then(associatedPost => {
+  //           expect(this.votes).toBe(true);
+  //         });
+  //         done();
+  //       });
+  //     }).catch(err => {
+  //       console.log(err);
+  //       done();
+  //     });
+  //   });
 });
