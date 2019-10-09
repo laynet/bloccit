@@ -180,7 +180,7 @@ describe("routes : comments", () => {
       });
     });
 
-    // #3
+    //digned in user can delete their own post
     describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
       it("should delete the comment with the associated ID", done => {
         Comment.findAll().then(comments => {
@@ -195,6 +195,48 @@ describe("routes : comments", () => {
               Comment.findAll().then(comments => {
                 expect(err).toBeNull();
                 expect(comments.length).toBe(commentCountBeforeDelete - 1);
+                done();
+              });
+            }
+          );
+        });
+      });
+    });
+    //signed in user can't delete someone elses post
+    describe("POST /topics/:topicID/posts/:postID/comments/:id/destroy", () => {
+      beforeEach(done => {
+        User.create({
+          email: "email@email.com",
+          password: "12345678",
+          role: "member"
+        }).then(user => {
+          request.get(
+            {
+              // mock authentication
+              url: "http://localhost:3000/auth/fake",
+              form: {
+                role: user.role, // mock authenticate as member user
+                userId: user.id,
+                email: user.email
+              }
+            },
+            (err, res, body) => {
+              done();
+            }
+          );
+        });
+      });
+      it("should not delete another user's comment", done => {
+        Comment.all().then(comments => {
+          const commentCountBeforeDelete = comments.length;
+          expect(commentCountBeforeDelete).toBe(1);
+          request.post(
+            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+              expect(res.statusCode).toBe(401);
+              Comment.all().then(comments => {
+                expect(err).toBeNull();
+                expect(comments.length).toBe(commentCountBeforeDelete);
                 done();
               });
             }
