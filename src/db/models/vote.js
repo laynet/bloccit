@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "postId",
       onDelete: "CASCADE"
     });
+
     Vote.belongsTo(models.User, {
       foreignKey: "userId",
       onDelete: "CASCADE"
