@@ -278,14 +278,16 @@ describe("Vote", () => {
         value: 1,
         userId: this.user.id,
         postId: this.post.id
-      }).then(vote => {
-        vote.postId.hasUpvoteFor().then(associatedPost => {
-          expect(this.vote).toBe(true);
+      })
+        .then(vote => {
+          vote.postId.hasUpvoteFor().then(associatedPost => {
+            expect(this.vote).toBe(true);
+          });
+          done();
+        })
+        .catch(err => {
+          done();
         });
-        done();
-      });
-    }).catch(err => {
-      done();
     });
   });
 
@@ -295,15 +297,17 @@ describe("Vote", () => {
         value: -1,
         userId: this.user.id,
         postId: this.post.id
-      }).then(vote => {
-        vote.postId.hasDownvoteFor().then(associatedPost => {
-          expect(this.vote).toBe(true);
+      })
+        .then(vote => {
+          vote.postId.hasDownvoteFor().then(associatedPost => {
+            expect(this.vote).toBe(true);
+          });
+          done();
+        })
+        .catch(err => {
+          console.log(err);
+          done();
         });
-        done();
-      });
-    }).catch(err => {
-      console.log(err);
-      done();
     });
   });
 });
