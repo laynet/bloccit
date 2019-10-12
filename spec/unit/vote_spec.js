@@ -253,65 +253,66 @@ describe("Vote", () => {
         });
     });
   });
-  //voting assignment
-  describe("#getPoints()", () => {
-    it("should return the total number of points per post", done => {
-      Vote.create({
-        value: 1,
-        userId: this.user.id,
-        postId: this.post.id
-      })
+  //   //voting assignment
+  //   describe("#getPoints()", () => {
+  //     it("should return the total number of points per post", done => {
+  //       Vote.create({
+  //         value: 1,
+  //         userId: this.user.id,
+  //         postId: this.post.id
+  //       })
 
-        .then(vote => {
-          Post.findOne({
-            include: [{ model: Vote, as: "votes" }]
-          }).then(post => {
-            let points = post.getPoints();
-            expect(points).toBe(1);
-          });
-        })
-        .catch(err => {
-          console.log(err);
-          done();
-        });
-    });
-  });
-  describe("#hasUpvoteFor()", () => {
-    it("should return true if the user has an upvote for the post", done => {
-      Vote.create({
-        value: 1,
-        userId: this.user.id,
-        postId: this.post.id
-      })
-        .then(vote => {
-          vote.postId.hasUpvoteFor().then(associatedPost => {
-            expect(this.vote).toBe(true);
-          });
-          done();
-        })
-        .catch(err => {
-          done();
-        });
-    });
-  });
+  //         .then(vote => {
+  //           Post.findOne({
+  //             include: [{ model: Vote, as: "votes" }]
+  //           }).then(post => {
+  //             let points = post.getPoints();
+  //             expect(points).toBe(1);
+  //             done();
+  //           });
+  //         })
+  //         .catch(err => {
+  //           console.log(err);
+  //           done();
+  //         });
+  //     });
+  //   });
+  //   describe("#hasUpvoteFor()", () => {
+  //     it("should return true if the user has an upvote for the post", done => {
+  //       Vote.create({
+  //         value: 1,
+  //         userId: this.user.id,
+  //         postId: this.post.id
+  //       })
+  //         .then(vote => {
+  //           vote.postId.hasUpvoteFor().then(associatedPost => {
+  //             expect(this.vote).toBe(true);
+  //           });
+  //           done();
+  //         })
+  //         .catch(err => {
+  //           done();
+  //         });
+  //     });
+  //   });
 
-  describe("#hasDownvoteFor()", () => {
-    it("shoud return true if the user has a downvote for the post", done => {
-      Vote.create({
-        value: -1,
-        userId: this.user.id,
-        postId: this.post.id
-      })
-        .then(vote => {
-          vote.postId.hasDownvoteFor().then(associatedPost => {
-            expect(this.vote).toBe(true);
-          });
-          done();
-        })
-        .catch(err => {
-          console.log(err);
-          done();
-        });
-    });
-  });
+  //   describe("#hasDownvoteFor()", () => {
+  //     it("shoud return true if the user has a downvote for the post", done => {
+  //       Vote.create({
+  //         value: -1,
+  //         userId: this.user.id,
+  //         postId: this.post.id
+  //       })
+  //         .then(vote => {
+  //           vote.postId.hasDownvoteFor().then(associatedPost => {
+  //             expect(this.vote).toBe(true);
+  //           });
+  //           done();
+  //         })
+  //         .catch(err => {
+  //           console.log(err);
+  //           done();
+  //         });
+  //     });
+  //   });
 });
