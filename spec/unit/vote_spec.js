@@ -279,7 +279,24 @@ describe("Vote", () => {
         userId: this.user.id,
         postId: this.post.id
       }).then(vote => {
-        vote.postId.hasUpvoteFor().then(associatePost => {
+        vote.postId.hasUpvoteFor().then(associatedPost => {
+          expect(this.vote).toBe(true);
+        });
+        done();
+      });
+    }).catch(err => {
+      done();
+    });
+  });
+
+  describe("#hasDownvoteFor()", () => {
+    it("shoud return true if the user has a downvote for the post", done => {
+      Vote.create({
+        value: -1,
+        userId: this.user.id,
+        postId: this.post.id
+      }).then(vote => {
+        vote.postId.hasDownvoteFor().then(associatedPost => {
           expect(this.vote).toBe(true);
         });
         done();
@@ -289,22 +306,4 @@ describe("Vote", () => {
       done();
     });
   });
-
-  //   describe("#hasDownvoteFor()", () => {
-  //     it("shoud return true if the user has a downvote for the post", done => {
-  //       Vote.create({
-  //         value: 1,
-  //         userId: this.user.id,
-  //         postId: this.post.id
-  //       }).then(vote => {
-  //         vote.postId.hasDownvoteFor().then(associatedPost => {
-  //           expect(this.vote).toBe(true);
-  //         });
-  //         done();
-  //       });
-  //     }).catch(err => {
-  //       console.log(err);
-  //       done();
-  //     });
-  //   });
 });

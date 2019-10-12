@@ -201,10 +201,9 @@ describe("routes : votes", () => {
       //   voting assignment
       it("should not create multiple downvotes per user", done => {
         const options = {
-          url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
+          url: `${base}${this.topic.id}/posts/${this.post.id}/votes/downvote`
         };
         request.get(options, (err, res, body) => {
-          console.log("ERROR: ", err, "BODY: ", body);
           Vote.findOne({
             where: {
               userId: this.user.id,
