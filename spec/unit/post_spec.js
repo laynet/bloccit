@@ -149,8 +149,8 @@ describe("Post", () => {
         postId: this.post.id
       })
         .then(vote => {
-          vote.postId.hasUpvoteFor().then(associatedPost => {
-            expect(this.vote).toBe(true);
+          vote.post.hasUpvoteFor(this.user.id, hasUpvote => {
+            expect(hasUpvote).toBe(true);
           });
           done();
         })
@@ -168,13 +168,12 @@ describe("Post", () => {
         postId: this.post.id
       })
         .then(vote => {
-          vote.postId.hasDownvoteFor().then(associatedPost => {
-            expect(this.vote).toBe(true);
+          this.post.hasDownvoteFor(this.user.id, hasDownvote => {
+            expect(hasDownvote).toBe(true);
           });
           done();
         })
         .catch(err => {
-          console.log(err);
           done();
         });
     });

@@ -137,7 +137,7 @@ describe("Vote", () => {
       })
         .then(vote => {})
         .catch(err => {
-          console.log(err);
+          expect(err.message).toContain("Validation isIn on value failed");
           done();
         });
     });
