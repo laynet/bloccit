@@ -261,10 +261,14 @@ describe("Vote", () => {
         userId: this.user.id,
         postId: this.post.id
       })
+
         .then(vote => {
-          let points = this.post.getPoints();
-          expect(points).toBe(1);
-          done();
+          Post.findOne({
+            include: [{ model: Vote, as: "votes" }]
+          }).then(post => {
+            let points = post.getPoints();
+            expect(points).toBe(1);
+          });
         })
         .catch(err => {
           console.log(err);

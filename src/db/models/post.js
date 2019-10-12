@@ -42,7 +42,6 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Post.prototype.getPoints = function() {
-    console.log("THIS>VOTES>LENGTH", this.votes && this.votes.length);
     if (!this.votes || this.votes.length === 0) return 0;
 
     return this.votes
