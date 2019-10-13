@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Favorite.addScope("favoritedPosts", userId => {
       return {
-        indelude: [
+        indclude: [
           {
             model: models.Post
           }

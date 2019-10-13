@@ -54,9 +54,7 @@
         <% if(favorites) { %> <% favorites.forEach((favorite) => { %>
 
         <li>
-          <a
-            href="/topics/<%= favorite.Post.id %>/posts/<%= favorite.Post.id %>"
-          >
+          <!-- <a href="/topics/<%= post.topicId %>/posts/<%= favorite.Post.id %>"> -->
             <%= favorite.Post.title %>
           </a>
         </li>
