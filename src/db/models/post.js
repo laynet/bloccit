@@ -54,6 +54,11 @@ module.exports = (sequelize, DataTypes) => {
           return prev + next;
         });
     };
+    Post.prototype.getFavoriteFor = function(userId) {
+      return this.favorites.find(favorite => {
+        return favorite.userId == userId;
+      });
+    };
   };
   return Post;
 };
